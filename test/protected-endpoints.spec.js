@@ -5,7 +5,11 @@ const helpers = require('./test-helpers')
 describe('Protected endpoints', () => {
 	let db
 
-	const { testUsers } = helpers.makeThingsFixtures()
+	const {
+		testUsers,
+		testThings,
+		testReviews,
+	} = helpers.makeThingsFixtures()
 
 	before('make knex instance', () => {
 		db = knex({
@@ -21,14 +25,14 @@ describe('Protected endpoints', () => {
 
 	afterEach('cleanup', () => helpers.cleanTables(db))
 
-	// beforeEach('insert things', () => {
-	// 	helpers.seedThingsTables(
-	// 		db,
-	// 		testUsers,
-	// 		testThings,
-	// 		testReviews
-	// 	)
-	// })
+	beforeEach('insert articles', () =>
+		helpers.seedThingsTables(
+			db,
+			testUsers,
+			testThings,
+			testReviews
+		)
+	)
 
 	const protectedEndpoints = [
 		{

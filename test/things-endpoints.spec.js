@@ -89,41 +89,46 @@ describe('Things Endpoints', function () {
 		})
 	})
 
-	// describe(`GET /api/things/:thing_id/reviews`, () => {
-	// 	context(`Given no things`, () => {
-	// 		it(`responds with 404`, () => {
-	// 			const thingId = 123456
-	// 			return supertest(app)
-	// 				.get(`/api/things/${thingId}/reviews`)
-	// 				.expect(404, { error: `Thing doesn't exist` })
-	// 		})
-	// 	})
+	describe(`GET /api/things/:thing_id/reviews`, () => {
+		context(`Given no things`, () => {
+			beforeEach(() => helpers.seedUsers(db, testUsers))
+			it(`responds with 404`, () => {
+				const thingId = 123456
+				return supertest(app)
+					.get(`/api/things/${thingId}/reviews`)
+					.set(
+						`Authorization`,
+						helpers.makeAuthHeader(testUsers[0])
+					)
+					.expect(404, { error: `Thing doesn't exist` })
+			})
+		})
 
-	// 	context(
-	// 		'Given there are reviews for thing in the database',
-	// 		() => {
-	// 			beforeEach('insert things', () =>
-	// 				helpers.seedThingsTables(
-	// 					db,
-	// 					testUsers,
-	// 					testThings,
-	// 					testReviews
-	// 				)
-	// 			)
+		// 	context(
+		// 		'Given there are reviews for thing in the database',
+		// 		() => {
+		// 			beforeEach('insert things', () =>
+		// 				helpers.seedThingsTables(
+		// 					db,
+		// 					testUsers,
+		// 					testThings,
+		// 					testReviews
+		// 				)
+		// 			)
 
-	// 			it('responds with 200 and the specified reviews', () => {
-	// 				const thingId = 1
-	// 				const expectedReviews = helpers.makeExpectedThingReviews(
-	// 					testUsers,
-	// 					thingId,
-	// 					testReviews
-	// 				)
+		// 			it('responds with 200 and the specified reviews', () => {
+		// 				const thingId = 1
+		// 				const expectedReviews = helpers.makeExpectedThingReviews(
+		// 					testUsers,
+		// 					thingId,
+		// 					testReviews
+		// 				)
 
-	// 				return supertest(app)
-	// 					.get(`/api/things/${thingId}/reviews`)
-	// 					.expect(200, expectedReviews)
-	// 			})
-	// 		}
-	// 	)
-	// })
+		// 				return supertest(app)
+		// 					.get(`/api/things/${thingId}/reviews`)
+		// 					.expect(200, expectedReviews)
+		// 			})
+		// 		}
+		// 	)
+	})
 })

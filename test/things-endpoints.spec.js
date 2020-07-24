@@ -1,6 +1,7 @@
 const knex = require('knex')
 const app = require('../src/app')
 const helpers = require('./test-helpers')
+const supertest = require('supertest')
 
 describe('Things Endpoints', function () {
 	let db
@@ -85,6 +86,33 @@ describe('Things Endpoints', function () {
 							expectedThing.content
 						)
 					})
+			})
+		})
+	})
+	describe.only('GET /api/things/:thing_id', () => {
+		describe('Given Things in the datatbase', () => {
+			beforeEach('seed with users', () =>
+				helpers.seedThingsTables(
+					db,
+					testUsers,
+					testThings,
+					testReviews
+				)
+			)
+			it('should respond with 200 and the specific thing', () => {
+				const thingId = 2
+				const expectedThing = helpers.makeExpectedThing(
+					testUsers,
+					testThings[thingId - 1],
+					testReviews
+				)
+				return supertest(app)
+					.get(`/api/things/${thingId}`)
+					.set(
+						'Authorization',
+						helpers.makeAuthHeader(testUsers[0])
+					)
+					.expect(200, expectedThing)
 			})
 		})
 	})
